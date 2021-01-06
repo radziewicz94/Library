@@ -4,16 +4,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Library {
-    List<Book> books = new ArrayList<>();
+    List<Publisher> pub = new ArrayList<>();
 
     public void addBook(Book book){
-        books.add(book);
+        pub.add(book);
+    }
+    public void addCourse(Course course){
+        pub.add(course);
     }
     public void printBooks(){
-        if(books.size() == 0)
+        int bookCount = 0;
+            for (Publisher book : pub) {
+                if(book instanceof Book) {
+                    System.out.println(book);
+                bookCount++;
+            }
+        }
+        if(bookCount == 0) {
             System.out.println("Nie ma żadnej książki w bibliotece");
-        for (Book book : books) {
-            System.out.println(book);
+        }
+    }
+    public void printCourses(){
+        int courseCount = 0;
+            for (Publisher course : pub) {
+                if(course instanceof Course) {
+                System.out.println(course);
+                courseCount++;
+            }
+        }
+        if(courseCount == 0) {
+            System.out.println("Nie ma żadnego kursu w bibliotece");
         }
     }
 }

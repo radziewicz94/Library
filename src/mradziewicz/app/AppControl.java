@@ -2,6 +2,7 @@ package mradziewicz.app;
 
 import mradziewicz.io.DataReader;
 import mradziewicz.model.Book;
+import mradziewicz.model.Course;
 import mradziewicz.model.Library;
 
 import java.util.Scanner;
@@ -12,42 +13,57 @@ public class AppControl {
     private Scanner sc = new Scanner(System.in);
 
     public void loopControl(){
+        Options options;
         do {
-            Options options;
             System.out.println("Wybierz opcję");
             Options.printOption();
             options = Options.getOption(sc.nextInt());
             sc.nextLine();
 
             switch (options) {
+                case ADD_BOOK:
+                    addBook();
+                    break;
+                case ADD_COURSE:
+                    addCourse();
+                    break;
                 case PRINT_BOOK:
                     printBooks();
                     break;
-                case ADD_BOOK:
-                    addBook();
+                case PRINT_COURSE:
+                    printCourse();
                     break;
                 case EXIT:
                     exitApp();
                     break;
             }
-        }while();
+        }while(options != Options.EXIT);
 
     }
     private void addBook(){
         Book book = dataReader.createBook();
         library.addBook(book);
     }
+    private void addCourse(){
+        Course course = dataReader.createCourse();
+        library.addCourse(course);
+    }
     private void printBooks(){
         library.printBooks();
+    }
+    private void printCourse(){
+        library.printCourses();
     }
     private void exitApp(){
         System.exit(0);
     }
     enum Options{
 
-        PRINT_BOOK(1, "Wyświetl książki dostępne w bibliotece"),
-        ADD_BOOK(2, "Dodaj książke"),
-        EXIT(0, "Wyjście z programu");
+        EXIT(0, "Wyjście z programu"),
+        ADD_BOOK(1, "Dodaj książke"),
+        ADD_COURSE(2, "Dodaj kurs"),
+        PRINT_BOOK(3, "Wyświetl książki dostępne w bibliotece"),
+        PRINT_COURSE(4, "Wyświetl kursy dostępne w bibliotece");
 
         Options(int value, String description) {
             this.value = value;
@@ -57,13 +73,17 @@ public class AppControl {
         String description;
 
         static void printOption(){
-            Options[] option = Options.values();
-            for (Options options : option) {
-                System.out.println(options.value + " - " + options.description);
+            for (Options value : Options.values()) {
+                System.out.println(value);
             }
         }
         static Options getOption(int value){
             return Options.values()[value];
+        }
+
+        @Override
+        public String toString() {
+            return value + " - " + description;
         }
     }
 }

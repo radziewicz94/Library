@@ -1,6 +1,7 @@
 package mradziewicz.io;
 
 import mradziewicz.model.Book;
+import mradziewicz.model.Course;
 
 import java.util.Scanner;
 
@@ -21,10 +22,31 @@ public class DataReader {
         System.out.println("Podaj numer isbn");
         String isbn = scanner.nextLine();
 
-        return new Book(title, author, releaseDate, pages, publisher, isbn);
+        return new Book(title, author, pages, publisher, releaseDate, isbn);
+    }
+    public Course createCourse(){
+        System.out.println("Podaj tytuł kursu");
+        String title = scanner.nextLine();
+        System.out.println("Podaj autora kursu");
+        String author = scanner.nextLine();
+        System.out.println("podaj stronę publikacji");
+        String publisher = scanner.nextLine();
+        System.out.println("Podaj ostatnią aktualizację kursu");
+        String lastUpdate = scanner.nextLine();
+        System.out.println("Podaj czas trwania kursu");
+        double hour = getDouble();
+        System.out.println("Podaj ocenę");
+        double rate = getDouble();
+
+        return new Course(title, author, publisher, hour, lastUpdate, rate);
     }
     private int getInt(){
         int value = scanner.nextInt();
+        scanner.nextLine();
+        return value;
+    }
+    private double getDouble(){
+        double value = scanner.nextDouble();
         scanner.nextLine();
         return value;
     }

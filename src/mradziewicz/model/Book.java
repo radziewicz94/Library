@@ -1,44 +1,15 @@
 package mradziewicz.model;
 
-public class Book {
-    private String title;
-    private String author;
-    private int releaseDate;
+public class Book extends Publisher{
     private int pages;
-    private String publisher;
+    private int releaseDate;
     private String isbn;
 
-    public Book(String title, String author, int releaseDate, int pages, String publisher, String isbn) {
-        this.title = title;
-        this.author = author;
-        this.releaseDate = releaseDate;
+    public Book(String title, String author, int pages, String publisher, int releaseDate, String isbn) {
+        super(title, author, publisher);
         this.pages = pages;
-        this.publisher = publisher;
-        this.isbn = isbn;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public int getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(int releaseDate) {
         this.releaseDate = releaseDate;
+        this.isbn = isbn;
     }
 
     public int getPages() {
@@ -49,12 +20,12 @@ public class Book {
         this.pages = pages;
     }
 
-    public String getPublisher() {
-        return publisher;
+    public int getReleaseDate() {
+        return releaseDate;
     }
 
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
+    public void setReleaseDate(int releaseDate) {
+        this.releaseDate = releaseDate;
     }
 
     public String getIsbn() {
@@ -67,13 +38,8 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book{" +
-                "title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", releaseDate=" + releaseDate +
-                ", pages=" + pages +
-                ", publisher='" + publisher + '\'' +
-                ", isbn='" + isbn + '\'' +
-                '}';
+        return super.toString() + "; " + pages +
+                "; " + releaseDate +
+                "; " + isbn;
     }
 }
