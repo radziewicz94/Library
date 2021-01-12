@@ -12,28 +12,10 @@ public class Library {
     public void addCourse(Course course){
         pub.add(course);
     }
-    public void printBooks(){
-        int bookCount = 0;
-            for (Publisher book : pub) {
-                if(book instanceof Book) {
-                    System.out.println(book);
-                bookCount++;
-            }
-        }
-        if(bookCount == 0) {
-            System.out.println("Nie ma żadnej książki w bibliotece");
-        }
+    public void addPublication(Publisher publisher){
+            pub.add(publisher);
     }
-    public void printCourses(){
-        int courseCount = 0;
-            for (Publisher course : pub) {
-                if(course instanceof Course) {
-                System.out.println(course);
-                courseCount++;
-            }
-        }
-        if(courseCount == 0) {
-            System.out.println("Nie ma żadnego kursu w bibliotece");
-        }
+    public List<Publisher> getPublication(){
+        return pub;
     }
 }

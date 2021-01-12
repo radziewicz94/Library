@@ -3,6 +3,7 @@ package mradziewicz.io;
 import mradziewicz.model.Book;
 import mradziewicz.model.Course;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class DataReader {
@@ -40,10 +41,16 @@ public class DataReader {
 
         return new Course(title, author, publisher, hour, lastUpdate, rate);
     }
-    private int getInt(){
-        int value = scanner.nextInt();
-        scanner.nextLine();
-        return value;
+    public int getInt(){
+        try {
+            return scanner.nextInt();
+        }catch (InputMismatchException e){
+            throw new InputMismatchException("błędnie zapisany dane, spróbuj jeszcze raz");
+        }
+        finally {
+            scanner.nextLine();
+        }
+
     }
     private double getDouble(){
         double value = scanner.nextDouble();
