@@ -52,6 +52,9 @@ public class DataReader {
         }
 
     }
+    public String getString(){
+        return scanner.nextLine();
+    }
     private double getDouble(){
         double value = scanner.nextDouble();
         scanner.nextLine();

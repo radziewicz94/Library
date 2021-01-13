@@ -1,8 +1,11 @@
 package mradziewicz.app;
 
+import mradziewicz.exception.DataImportException;
 import mradziewicz.exception.NoSuchOptionException;
 import mradziewicz.io.ConsolePrinter;
 import mradziewicz.io.DataReader;
+import mradziewicz.io.file.FileManager;
+import mradziewicz.io.file.FileManagerBuilder;
 import mradziewicz.model.Book;
 import mradziewicz.model.Course;
 import mradziewicz.model.Library;
@@ -12,11 +15,23 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class AppControl {
-    private Library library = new Library();
+    private Library library;
     private DataReader dataReader = new DataReader();
     private Scanner sc = new Scanner(System.in);
     private ConsolePrinter consolePrinter = new ConsolePrinter();
+    private FileManager fileManager;
 
+    public AppControl(){
+        fileManager = new FileManagerBuilder(dataReader).build();
+        try{
+            library = fileManager.importData();
+            System.out.println("Zaimportowano nową bazę");
+        }catch (DataImportException e){
+            System.out.println(e.getMessage());
+            System.out.println("zainiciowano nową bazę");
+            library = new Library();
+        }
+    }
     public void loopControl(){
         Options options;
         do {
@@ -64,7 +79,7 @@ public class AppControl {
     private void addBook(){
         try {
             Book book = dataReader.createBook();
-            library.addBook(book);
+            library.addPublication(book);
         }catch (InputMismatchException e){
             System.out.println(e.getMessage());
         }
@@ -84,6 +99,8 @@ public class AppControl {
         consolePrinter.printCourses(library.getPublication());
     }
     private void exitApp(){
+        fileManager.exportData(library);
+        System.out.println("Wychodzę z programu");
         System.exit(0);
     }
     enum Options{

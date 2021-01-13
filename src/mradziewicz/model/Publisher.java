@@ -1,8 +1,9 @@
 package mradziewicz.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class Publisher {
+public abstract class Publisher implements Serializable {
     private String title;
     private String author;
     private String publisher;

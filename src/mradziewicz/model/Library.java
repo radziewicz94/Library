@@ -1,9 +1,10 @@
 package mradziewicz.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Library {
+public class Library implements Serializable {
     List<Publisher> pub = new ArrayList<>();
 
     public void addBook(Book book){
