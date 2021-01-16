@@ -1,9 +1,10 @@
 package mradziewicz.model;
 
-public class Book extends Publisher{
+public class Book extends Publication {
     private int pages;
     private int releaseDate;
     private String isbn;
+    public static final String BOOK_TYPE = "Książka";
 
     public Book(String title, String author, int pages, String publisher, int releaseDate, String isbn) {
         super(title, author, publisher);
@@ -34,6 +35,12 @@ public class Book extends Publisher{
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
+    }
+
+    @Override
+    public String toCsv() {
+        return BOOK_TYPE + ";" + getTitle() + ";" + getAuthor() + ";" + pages + ";" + getPublisher() + ";"
+                + releaseDate + ";" + isbn;
     }
 
     @Override

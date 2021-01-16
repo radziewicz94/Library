@@ -3,12 +3,12 @@ package mradziewicz.model;
 import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class Publisher implements Serializable {
+public abstract class Publication implements Serializable {
     private String title;
     private String author;
     private String publisher;
 
-    public Publisher(String title, String author, String publisher) {
+    public Publication(String title, String author, String publisher) {
         this.title = title;
         this.author = author;
         this.publisher = publisher;
@@ -38,14 +38,15 @@ public abstract class Publisher implements Serializable {
         this.publisher = publisher;
     }
 
+    public abstract String toCsv();
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Publisher)) return false;
-        Publisher publisher1 = (Publisher) o;
-        return Objects.equals(title, publisher1.title) &&
-                Objects.equals(author, publisher1.author) &&
-                Objects.equals(publisher, publisher1.publisher);
+        if (!(o instanceof Publication)) return false;
+        Publication publication1 = (Publication) o;
+        return Objects.equals(title, publication1.title) &&
+                Objects.equals(author, publication1.author) &&
+                Objects.equals(publisher, publication1.publisher);
     }
 
     @Override

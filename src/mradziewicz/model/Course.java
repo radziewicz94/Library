@@ -2,10 +2,11 @@ package mradziewicz.model;
 
 import java.util.Objects;
 
-public class Course extends Publisher{
+public class Course extends Publication {
     private double hours;
     private String lastUpdate;
     private double rating;
+    public static final String COURSE_TYPE = "Kursy";
 
     public Course(String title, String author, String publisher, double hours, String lastUpdate, double rating) {
         super(title, author, publisher);
@@ -36,6 +37,12 @@ public class Course extends Publisher{
 
     public void setRating(double rating) {
         this.rating = rating;
+    }
+
+    @Override
+    public String toCsv() {
+        return COURSE_TYPE + ";" + getTitle() + ";" + getAuthor() + ";" + getPublisher() + ";" + hours + ";"
+                + lastUpdate + ";" + rating;
     }
 
     @Override

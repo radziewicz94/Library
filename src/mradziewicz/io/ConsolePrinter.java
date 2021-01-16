@@ -2,14 +2,14 @@ package mradziewicz.io;
 
 import mradziewicz.model.Book;
 import mradziewicz.model.Course;
-import mradziewicz.model.Publisher;
+import mradziewicz.model.Publication;
 
 import java.util.List;
 
 public class ConsolePrinter {
-    public void printBooks(List<Publisher> pub){
+    public void printBooks(List<Publication> pub){
         int bookCount = 0;
-        for (Publisher book : pub) {
+        for (Publication book : pub) {
             if(book instanceof Book) {
                 System.out.println(book);
                 bookCount++;
@@ -19,9 +19,9 @@ public class ConsolePrinter {
             System.out.println("Nie ma żadnej książki w bibliotece");
         }
     }
-    public void printCourses(List<Publisher> pub){
+    public void printCourses(List<Publication> pub){
         int courseCount = 0;
-        for (Publisher course : pub) {
+        for (Publication course : pub) {
             if(course instanceof Course) {
                 System.out.println(course);
                 courseCount++;

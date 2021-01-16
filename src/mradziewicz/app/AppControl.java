@@ -1,7 +1,9 @@
 package mradziewicz.app;
 
+import mradziewicz.exception.DataExportException;
 import mradziewicz.exception.DataImportException;
 import mradziewicz.exception.NoSuchOptionException;
+import mradziewicz.exception.NoSuchTypeException;
 import mradziewicz.io.ConsolePrinter;
 import mradziewicz.io.DataReader;
 import mradziewicz.io.file.FileManager;
@@ -26,7 +28,7 @@ public class AppControl {
         try{
             library = fileManager.importData();
             System.out.println("Zaimportowano nową bazę");
-        }catch (DataImportException e){
+        }catch (DataImportException | NoSuchTypeException e){
             System.out.println(e.getMessage());
             System.out.println("zainiciowano nową bazę");
             library = new Library();
@@ -87,7 +89,7 @@ public class AppControl {
     private void addCourse(){
         try {
             Course course = dataReader.createCourse();
-            library.addCourse(course);
+            library.addPublication(course);
         }catch (InputMismatchException e){
             System.out.println(e.getMessage());
         }
@@ -99,7 +101,12 @@ public class AppControl {
         consolePrinter.printCourses(library.getPublication());
     }
     private void exitApp(){
-        fileManager.exportData(library);
+        try {
+            fileManager.exportData(library);
+            System.out.println("Export danych zakończony powodzeniem");
+        }catch (DataExportException e){
+            System.out.println(e.getMessage());
+        }
         System.out.println("Wychodzę z programu");
         System.exit(0);
     }
