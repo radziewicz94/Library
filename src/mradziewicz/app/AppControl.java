@@ -1,20 +1,13 @@
 package mradziewicz.app;
 
-import mradziewicz.exception.DataExportException;
-import mradziewicz.exception.DataImportException;
-import mradziewicz.exception.NoSuchOptionException;
-import mradziewicz.exception.NoSuchTypeException;
+import mradziewicz.exception.*;
 import mradziewicz.io.ConsolePrinter;
 import mradziewicz.io.DataReader;
 import mradziewicz.io.file.FileManager;
 import mradziewicz.io.file.FileManagerBuilder;
-import mradziewicz.model.Book;
-import mradziewicz.model.Course;
-import mradziewicz.model.Library;
+import mradziewicz.model.*;
 
-import javax.swing.text.html.Option;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 public class AppControl {
     private Library library;
@@ -54,12 +47,73 @@ public class AppControl {
                 case PRINT_COURSE:
                     printCourse();
                     break;
+                case DELETE_BOOK:
+                    deleteBook();
+                    break;
+                case DELETE_COURSE:
+                    deleteCourse();
+                    break;
+                case ADD_USER:
+                    addUser();
+                    break;
+                case PRINT_USER:
+                    printUser();
+                    break;
                 case EXIT:
                     exitApp();
                     break;
+                case RENTAL_PUBLICATION:
+                    rentBook();
+                    break;
+                default:
+                    System.out.println("Nie ma takiej opcji");
             }
         }while(options != Options.EXIT);
 
+    }
+
+    private void deleteCourse() {
+        Course course = dataReader.createCourse();
+        library.deletePublication(course);
+    }
+
+    private void rentBook() {
+       // String userPesel = selectUser();
+        Map<String, Publication> bookTitle = selectBook();
+        library.rentBook(bookTitle);
+    }
+
+    private Map<String, Publication> selectBook() {
+        System.out.println("Podaj tytuł książki z dostepnych ponizej");
+        printBooks();
+        String title = dataReader.getString();
+        return library.getPublication();
+    }
+
+    private String selectUser() {
+        System.out.println("Podaj Pesel podanego użytkownika");
+        consolePrinter.printUser(library.getUsers());
+        System.out.println("Podaj pesel");
+        String pesel = dataReader.getString();
+        return pesel;
+    }
+
+    private void deleteBook() {
+        Book book = dataReader.createBook();
+        library.deletePublication(book);
+    }
+
+    private void addUser() {
+        LibraryUser user = dataReader.createUser();
+        try {
+            library.addUser(user);
+        }catch (UserAlreadyExsistException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void printUser(){
+        consolePrinter.printUser(library.getUsers());
     }
 
     private Options chooseOption() {
@@ -95,9 +149,13 @@ public class AppControl {
         }
     }
     private void printBooks(){
+      //  Map<String, Publication> sortedBooks = library.getPublication();
+       // sortedBooks.sort((b1, b2) -> b1.getTitle().compareToIgnoreCase(b2.getTitle()));
         consolePrinter.printBooks(library.getPublication());
     }
     private void printCourse(){
+      //  Map<String, Publication> sortedCourses = library.getPublication();
+      //  sortedCourses.sort((p1, p2) -> p1.getTitle().compareToIgnoreCase(p2.getTitle()));
         consolePrinter.printCourses(library.getPublication());
     }
     private void exitApp(){
@@ -116,7 +174,12 @@ public class AppControl {
         ADD_BOOK(1, "Dodaj książke"),
         ADD_COURSE(2, "Dodaj kurs"),
         PRINT_BOOK(3, "Wyświetl książki dostępne w bibliotece"),
-        PRINT_COURSE(4, "Wyświetl kursy dostępne w bibliotece");
+        PRINT_COURSE(4, "Wyświetl kursy dostępne w bibliotece"),
+        DELETE_BOOK(5, "Usuń książkę"),
+        DELETE_COURSE(6, "Usuń kurs"),
+        ADD_USER(7, "Dodaj czytelnika"),
+        PRINT_USER(8, "Wyświetl czytelników"),
+        RENTAL_PUBLICATION(9, "Wypożycz książkę lub kurs");
 
         Options(int value, String description) {
             this.value = value;

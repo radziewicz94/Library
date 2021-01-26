@@ -3,32 +3,57 @@ package mradziewicz.io.file;
 import mradziewicz.exception.DataExportException;
 import mradziewicz.exception.DataImportException;
 import mradziewicz.exception.NoSuchTypeException;
-import mradziewicz.model.Book;
-import mradziewicz.model.Course;
-import mradziewicz.model.Library;
-import mradziewicz.model.Publication;
+import mradziewicz.model.*;
 
 import java.io.*;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Scanner;
-import java.util.stream.DoubleStream;
+import java.util.Map;
 
 public class CsvFileManager implements FileManager {
-    private static final String FILE_TYPE = "Library.csv";
+    private static final String LIBRARY_FILE = "Library.csv";
+    private static final String USER_FILE = "User.csv";
 
     @Override
     public Library importData() {
         Library library = new Library();
-        try(Scanner scanner = new Scanner(new FileReader(FILE_TYPE))){
-            while(scanner.hasNextLine()){
-                String line = scanner.nextLine();
-                    library.addPublication(createObjectFromFile(line));
-            }
-        }catch (FileNotFoundException e){
-            throw new DataImportException("Nie udało się zaimportować pliku " + FILE_TYPE);
-        }
+        importPublication(library);
+        importUser(library);
         return library;
+    }
+
+    private void importUser(Library library) {
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(USER_FILE))){
+
+            bufferedReader.lines()
+                    .map(this::createUserFromFile)
+                    .forEach(library::addUser);
+        }catch (FileNotFoundException e){
+            throw new DataImportException("Nie udało się zaimportować pliku " + USER_FILE);
+        } catch (IOException e) {
+            throw new DataImportException("Błąd odczytu pliku " + USER_FILE);
+        }
+    }
+
+    private void importPublication(Library library) {
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(LIBRARY_FILE))){
+            bufferedReader.lines()
+                    .map(this::createObjectFromFile)
+                    .forEach(library::addPublication);
+        }catch (FileNotFoundException e){
+            throw new DataImportException("Nie udało się zaimportować pliku " + LIBRARY_FILE);
+        } catch (IOException e) {
+            throw new DataImportException("Nie udało się zaimportować pliku " + LIBRARY_FILE);
+        }
+    }
+
+    private LibraryUser createUserFromFile(String line) {
+        String[] split = line.split(";");
+        String firstName = split[0];
+        String lastName = split[1];
+        String pesel = split[2];
+
+        return new LibraryUser(firstName, lastName, pesel);
     }
 
     private Publication createObjectFromFile(String line) {
@@ -68,13 +93,37 @@ public class CsvFileManager implements FileManager {
 
     @Override
     public void exportData(Library library) {
-        List<Publication> publication = library.getPublication();
+        exportPublication(library);
+        exportUser(library);
+
+    }
+
+    private void exportUser(Library library) {
+        Collection<LibraryUser> users = library.getUsers().values();
         try {
             try (
-                    var fileWriter = new FileWriter(FILE_TYPE);
+                    var fileWriter = new FileWriter(USER_FILE);
                     var bufferedWriter = new BufferedWriter(fileWriter);
             ) {
-                for (Publication publication1 : publication) {
+                for (LibraryUser user : users) {
+                    bufferedWriter.write(user.toCsv());
+                    bufferedWriter.newLine();
+                }
+            }
+        } catch (IOException e) {
+            throw new DataExportException("Nie udało się zapisać pliku");
+        }
+    }
+
+
+    private void exportPublication(Library library) {
+        Map<String, Publication> publication = library.getPublication();
+        try {
+            try (
+                    var fileWriter = new FileWriter(LIBRARY_FILE);
+                    var bufferedWriter = new BufferedWriter(fileWriter);
+            ) {
+                for (Publication publication1 : publication.values()) {
                     bufferedWriter.write(publication1.toCsv());
                     bufferedWriter.newLine();
                 }

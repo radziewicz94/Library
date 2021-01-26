@@ -3,7 +3,7 @@ package mradziewicz.model;
 import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class Publication implements Serializable {
+public abstract class Publication implements Serializable{
     private String title;
     private String author;
     private String publisher;
@@ -39,6 +39,7 @@ public abstract class Publication implements Serializable {
     }
 
     public abstract String toCsv();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

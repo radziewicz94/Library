@@ -2,6 +2,7 @@ package mradziewicz.io;
 
 import mradziewicz.model.Book;
 import mradziewicz.model.Course;
+import mradziewicz.model.LibraryUser;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -40,6 +41,16 @@ public class DataReader {
         double rate = getDouble();
 
         return new Course(title, author, publisher, hour, lastUpdate, rate);
+    }
+    public LibraryUser createUser(){
+        System.out.println("Podaj imie");
+        String firstName = scanner.nextLine();
+        System.out.println("Podaj nazwisko");
+        String lastName = scanner.nextLine();
+        System.out.println("Podaj pesel");
+        String pesel = scanner.nextLine();
+
+        return new LibraryUser(firstName, lastName, pesel);
     }
     public int getInt(){
         try {
